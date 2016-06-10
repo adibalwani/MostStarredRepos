@@ -8,7 +8,7 @@ public class Constants {
     // https://api.github.com/search/repositories?q=created:>2016-06-03&sort=stars&order=desc
 
     // RecyclerView Span count
-    public static final int SPAN_COUNT_PORTRAIT = 2;
+    public static final int SPAN_COUNT_PORTRAIT = 1;
 
     // Search Repo URLs and Params
     public static final String SEARCH_REPOS_URL = "https://api.github.com/search/repositories";

@@ -38,7 +38,6 @@ public class MainFragment extends Fragment {
     private Activity mActivity;
     protected RecyclerView mRecyclerView;
     protected RecyclerViewAdapter mAdapter;
-    private String[] mDataSet;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,9 +74,9 @@ public class MainFragment extends Fragment {
     /**
      * Task to fetch the most starred repositories
      */
-    private class FetchMostStarredTask extends AsyncTask<Void, Void, String[]> {
+    private class FetchMostStarredTask extends AsyncTask<Void, Void, Repository[]> {
         @Override
-        protected String[] doInBackground(Void... params) {
+        protected Repository[] doInBackground(Void... params) {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
@@ -149,12 +148,13 @@ public class MainFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String[] strings) {
+        protected void onPostExecute(Repository[] strings) {
             if (strings != null) {
-                mDataSet = strings;
-                mAdapter = new RecyclerViewAdapter(mDataSet, mActivity);
                 // Set RecyclerViewAdapter as the adapter for RecyclerView.
+                mAdapter = new RecyclerViewAdapter(strings, mActivity);
                 mRecyclerView.setAdapter(mAdapter);
+            } else {
+                // TODO: Add Appropriate error message
             }
         }
 
@@ -162,27 +162,27 @@ public class MainFragment extends Fragment {
          * Take the String representing the complete result in JSON Format and
          * pull out the data we need to construct the Strings needed for the wireframes.
          */
-        private String[] getSingleItemFromJson(String jsonStr) throws JSONException {
+        private Repository[] getSingleItemFromJson(String jsonStr) throws JSONException {
             // These are the names of the JSON objects that need to be extracted.
             final String ARRAY = "items";
             final String REPO_NAME = "name";
+            final String CONTRIBUTOR_URL = "contributors_url";
 
             JSONObject searchJson = new JSONObject(jsonStr);
             JSONArray resultArray = searchJson.getJSONArray(ARRAY);
 
             int totalResults = resultArray.length();
-            String[] result = new String[totalResults];
+            Repository[] result = new Repository[totalResults];
 
             for (int i = 0; i < totalResults; i++) {
                 // Get the JSON object representing the item
                 JSONObject item = resultArray.getJSONObject(i);
-                result[i] = item.getString(REPO_NAME);
+                String name = item.getString(REPO_NAME);
+                String url = item.getString(CONTRIBUTOR_URL);
+                result[i] = new Repository(name, url);
             }
 
-            Log.i(LOG_TAG, "Parsed JSON");
-
             return result;
-
         }
 
         /**

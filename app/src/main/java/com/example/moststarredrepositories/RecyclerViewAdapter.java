@@ -14,15 +14,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String LOG_TAG = RecyclerViewAdapter.class.getSimpleName();
 
-    private String[] mDataSet;
+    private Repository[] mDataSet;
     private Context mContext;
 
     /**
      * Initialize the dataset of the Adapter.
      *
-     * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
+     * @param dataSet Repository[] containing the data to populate views to be used by RecyclerView.
      */
-    public RecyclerViewAdapter(String[] dataSet, Context context) {
+    public RecyclerViewAdapter(Repository[] dataSet, Context context) {
         mDataSet = dataSet;
         mContext = context;
     }
@@ -64,7 +64,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // with that element
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.getRepoName().setText(mDataSet[position]);
+        holder.getRepoName().setText(mDataSet[position].getName());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
