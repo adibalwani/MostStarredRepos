@@ -11,7 +11,7 @@ public class Repository {
     private String name;
 
     /**
-     * Contributors URL
+     * ContributorsActivity URL
      */
     private String contributorsUrl;
 

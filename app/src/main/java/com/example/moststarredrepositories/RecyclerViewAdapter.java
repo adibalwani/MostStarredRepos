@@ -1,7 +1,9 @@
 package com.example.moststarredrepositories;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,23 +32,37 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView repoName;
 
         public ViewHolder(View itemView) {
             super(itemView);
             // Define click listener for the ViewHolder's View.
-            itemView.setOnClickListener(new View.OnClickListener() {
+            /*itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Show Detail View/Activity
                 }
-            });
+            });*/
+            itemView.setOnClickListener(this);
             repoName = (TextView) itemView.findViewById(R.id.repo_name_text_view);
         }
 
         public TextView getRepoName() {
             return repoName;
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            Repository repo = mDataSet[position];
+            String uri = repo.getContributorsUrl();
+            Log.i("Rachit", "onClick " + repoName);
+            Log.i("Rachit", "view " + getAdapterPosition());
+            // get contributors
+            Intent intent = new Intent(mContext, ContributorsActivity.class);
+            intent.putExtra("contributors", uri);
+            mContext.startActivity(intent);
         }
     }
 
@@ -55,7 +71,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // Create a new view
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_base, parent, false);
-
         return new ViewHolder(view);
     }
 
