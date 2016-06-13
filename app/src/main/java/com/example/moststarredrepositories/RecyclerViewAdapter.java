@@ -3,14 +3,16 @@ package com.example.moststarredrepositories;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.moststarredrepositories.activity.ContributorsActivity;
+
 /**
  * Provide views to RecyclerView
+ * @author rachit
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
@@ -37,13 +39,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public ViewHolder(View itemView) {
             super(itemView);
-            // Define click listener for the ViewHolder's View.
-            /*itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Show Detail View/Activity
-                }
-            });*/
             itemView.setOnClickListener(this);
             repoName = (TextView) itemView.findViewById(R.id.repo_name_text_view);
         }
@@ -57,9 +52,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             int position = getAdapterPosition();
             Repository repo = mDataSet[position];
             String uri = repo.getContributorsUrl();
-            Log.i("Rachit", "onClick " + repoName);
-            Log.i("Rachit", "view " + getAdapterPosition());
-            // get contributors
             Intent intent = new Intent(mContext, ContributorsActivity.class);
             intent.putExtra("contributors", uri);
             mContext.startActivity(intent);

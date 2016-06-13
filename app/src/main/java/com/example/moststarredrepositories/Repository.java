@@ -2,6 +2,7 @@ package com.example.moststarredrepositories;
 
 /**
  * POJO for storing Repos information
+ * @author rachit
  */
 public class Repository {
 

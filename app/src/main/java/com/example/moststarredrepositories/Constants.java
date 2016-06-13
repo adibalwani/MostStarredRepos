@@ -2,10 +2,9 @@ package com.example.moststarredrepositories;
 
 /**
  * Constants defined in the whole app
+ * @author rachit
  */
 public class Constants {
-
-    // https://api.github.com/search/repositories?q=created:>2016-06-03&sort=stars&order=desc
 
     // RecyclerView Span count
     public static final int SPAN_COUNT_PORTRAIT = 1;
@@ -20,4 +19,5 @@ public class Constants {
 
     // Error Messages
     public static final String INTERNET_UNAVAILABLE = "NO INTERNET CONNECTION";
+    public static final String ERROR = "Couldn't fetch the data, please try again";
 }

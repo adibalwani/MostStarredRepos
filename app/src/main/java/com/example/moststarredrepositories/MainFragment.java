@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.moststarredrepositories.network.NetworkManager;
 
@@ -30,7 +31,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
+/**
+ * @author rachit
+ */
 public class MainFragment extends Fragment {
 
     private static final String LOG_TAG = MainFragment.class.getSimpleName();
@@ -124,7 +127,6 @@ public class MainFragment extends Fragment {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
                 }
-
                 if (reader != null) {
                     try {
                         reader.close();
@@ -132,7 +134,6 @@ public class MainFragment extends Fragment {
                         Log.e(LOG_TAG, "Error closing stream", e);
                     }
                 }
-
                 try {
                     if (resultJSON != null) {
                         return getSingleItemFromJson(resultJSON);
@@ -154,7 +155,7 @@ public class MainFragment extends Fragment {
                 mAdapter = new RecyclerViewAdapter(strings, mActivity);
                 mRecyclerView.setAdapter(mAdapter);
             } else {
-                // TODO: Add Appropriate error message
+                Toast.makeText(getActivity(), Constants.ERROR, Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -181,7 +182,6 @@ public class MainFragment extends Fragment {
                 String url = item.getString(CONTRIBUTOR_URL);
                 result[i] = new Repository(name, url);
             }
-
             return result;
         }
 

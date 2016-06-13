@@ -1,12 +1,18 @@
-package com.example.moststarredrepositories;
+package com.example.moststarredrepositories.activity;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.moststarredrepositories.Constants;
+import com.example.moststarredrepositories.Contributor;
+import com.example.moststarredrepositories.ContributorAdapter;
+import com.example.moststarredrepositories.R;
 import com.example.moststarredrepositories.network.NetworkManager;
 
 import org.json.JSONArray;
@@ -21,6 +27,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * class to display the list of contributors of a particular repository
+ * @author rachit
+ */
 public class ContributorsActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = ContributorsActivity.class.getSimpleName();
@@ -33,6 +43,14 @@ public class ContributorsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contributors);
+        initViews();
+    }
+
+    private void initViews() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.repo_contributor);
+        RecyclerView.LayoutManager layoutManager =
+                new GridLayoutManager(this, Constants.SPAN_COUNT_PORTRAIT);
+        mRecyclerView.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -55,16 +73,11 @@ public class ContributorsActivity extends AppCompatActivity {
         protected Contributor[] doInBackground(String... params) {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
-
-            //Uri builtUri = new Uri(params);
-            //Log.i(LOG_TAG, "Built URI is: " + builtUri.toString());
-
             // Will contain the raw JSON response as a string
             String resultJSON = null;
 
             try {
                 URL url = new URL(params[0]);
-
                 // Create request to GitHub API, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -126,11 +139,10 @@ public class ContributorsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Contributor[] strings) {
             if (strings != null) {
-                // Set RecyclerViewAdapter as the adapter for RecyclerView.
                 mAdapter = new ContributorAdapter(strings, mContext);
                 mRecyclerView.setAdapter(mAdapter);
             } else {
-                // TODO: Add Appropriate error message
+                Toast.makeText(ContributorsActivity.this, Constants.ERROR, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -141,16 +153,10 @@ public class ContributorsActivity extends AppCompatActivity {
      */
     private Contributor[] getSingleItemFromJson(String jsonStr) throws JSONException {
         // These are the names of the JSON objects that need to be extracted.
-        //final String ARRAY = "items";
         final String PERSON_NAME = "login";
         final String PERSON_LINK = "html_url";
         final String PERSON_IMAGE = "avatar_url";
-        //final String CONTRIBUTOR_URL = "contributors_url";
-
-        //JSONObject searchJson = new JSONObject(jsonStr);
         JSONArray resultArray = new JSONArray(jsonStr);
-        //JSONArray resultArray = searchJson.getJSONArray(ARRAY);
-
         int totalResults = resultArray.length();
         Contributor[] result = new Contributor[totalResults];
 
@@ -159,9 +165,9 @@ public class ContributorsActivity extends AppCompatActivity {
             JSONObject item = resultArray.getJSONObject(i);
             String name = item.getString(PERSON_NAME);
             String url = item.getString(PERSON_LINK);
-            result[i] = new Contributor(name, url, "");
+            String image = item.getString(PERSON_IMAGE);
+            result[i] = new Contributor(name, url, image);
         }
-
         return result;
     }
 }

@@ -1,7 +1,7 @@
 package com.example.moststarredrepositories;
 
-/**
- * Created by rachit on 10-06-2016.
+/** POJO for storing contributor information
+ * @author rachit
  */
 public class Contributor {
 
@@ -9,7 +9,7 @@ public class Contributor {
     private String repoUrl;
     private String imageUrl;
 
-    Contributor(String name, String repoUrl, String imageUrl) {
+    public Contributor(String name, String repoUrl, String imageUrl) {
         this.name = name;
         this.repoUrl = repoUrl;
         this.imageUrl = imageUrl;

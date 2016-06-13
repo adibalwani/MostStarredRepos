@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 /**
- * Created by rachit on 10-06-2016.
+ * @author rachit
  */
 public class ContributorAdapter extends RecyclerView.Adapter<ContributorAdapter.ViewHolder> {
 
@@ -60,7 +62,7 @@ public class ContributorAdapter extends RecyclerView.Adapter<ContributorAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.getName().setText(mDataSet[position].getName());
-        //holder.getImage().setText(mDataSet[position].getName());
+        Picasso.with(mContext).load(mDataSet[position].getImageUrl()).into(holder.getImage());
         holder.getLink().setText(mDataSet[position].getRepoUrl());
     }
 

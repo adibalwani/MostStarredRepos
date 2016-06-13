@@ -9,6 +9,7 @@ import com.example.moststarredrepositories.Constants;
 
 /**
  * Class used to manage network connections
+ * @author rachit
  */
 public class NetworkManager {
 
